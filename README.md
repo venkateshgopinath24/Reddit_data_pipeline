@@ -1,7 +1,7 @@
 
 # Reddit Data Pipeline Engineering with Apache Airflow and AWS
 
-This project demonstrates a complete data engineering pipeline that extracts data from Reddit, processes it, and loads it into AWS services(Redshift and Glue Database) for further transformations and visualization. The pipeline is orchestrated using **Apache Airflow** and leverages **AWS S3**, **AWS Glue**, **AWS Glue Crawler**, **AWS Athena**, and **Amazon Redshift** for efficient data handling.
+This project demonstrates a complete data engineering pipeline that extracts data from Reddit, processes it, and loads it into AWS services (Redshift and Glue Database) for further transformations and visualization. The pipeline is orchestrated using **Apache Airflow** and leverages **AWS S3**, **AWS Glue**, **AWS Glue Crawler**, **AWS Athena**, and **Amazon Redshift** for efficient data handling.
 
 ## Table of Contents
 - [Overview](#overview)
@@ -9,7 +9,8 @@ This project demonstrates a complete data engineering pipeline that extracts dat
 - [Technologies Used](#technologies-used)
 - [Setup Instructions](#setup-instructions)
 - [Project Workflow](#project-workflow)
-
+- [Screenshots](#screenshots)
+- [Conclusion](#conclusion)
 
 ## Overview
 
@@ -31,31 +32,18 @@ This project connects to a Reddit instance using Apache Airflow to manage ETL (E
 ## Technologies Used
 
 - **PRAW**: Python Reddit API Wrapper used for extracting data from Reddit.
-
 - **Pandas**: For data manipulation and transformation.
-
 - **Docker**: Containerization platform for running Airflow, PostgreSQL, and Redis services.
-
 - **PostgreSQL**: Used as the metadata backend for Airflow.
-
 - **Redis**: Used as the message broker for Celery in Airflow.
-
 - **AWS S3**: For storing extracted data in CSV format.
-
 - **AWS Glue**: For data transformation and schema management through crawlers and ETL jobs.
-
 - **AWS Athena**: For querying data stored in S3 using SQL.
-
 - **Amazon Redshift**: For advanced analytics and data warehousing capabilities.
-
 - **Apache Airflow's Celery Executor**: For distributing tasks across multiple worker nodes, improving scalability.
-
 - **AWS IAM (Identity and Access Management)**: For managing permissions and access to AWS resources securely.
-
 - **AWS CloudFormation**: For automating the deployment of AWS infrastructure.
-
 - **AWS SDK for Python (Boto3)**: For programmatic interaction with AWS services.
-
 - **Git**: For version control and collaboration.
 
 ## Setup Instructions
@@ -67,36 +55,32 @@ This project connects to a Reddit instance using Apache Airflow to manage ETL (E
    ```
 
 2. **Install dependencies**:
-
-   Necessary directories and files.
+   Prepare necessary directories and files:
    ```bash
    mkdir config dags data etls logs pipelines tests utils
    touch airflow.env docker-compose.yml Dockerfile
    ```
-   Using a python virtual environment (3.9 recommended), install dependencies using below.
+   Using a Python virtual environment (3.9 recommended), install dependencies:
    ```bash
    pip install apache-airflow numpy pandas praw
    ```
-   Ensure you have Docker installed.
-   Make requirements.txt that will be used by Docker to create a container with necessary dependencies.
+   Ensure you have Docker installed. Create `requirements.txt` to be used by Docker to create a container with necessary dependencies:
    ```bash
-   pip freeze > requirments.txt
+   pip freeze > requirements.txt
    ```
-   
 
-4. **Create a Reddit application**:
+3. **Create a Reddit application**:
    - Go to [Reddit's Developer Portal](https://www.reddit.com/prefs/apps) and create a new application.
    - Set the `client_id`, `client_secret`, and `user_agent` in your configuration file.
 
-5. **Configure environment variables in ```.config```**:
-   
+4. **Configure environment variables in `.config`**:
    ```bash
    [database]
    database_host = localhost
    database_name = airflow_reddit
    database_port = 5432
    database_username = postgres
-   database_password = postrgres
+   database_password = postgres
 
    [file_paths]
    input_path = /opt/airflow/data/input
@@ -118,14 +102,17 @@ This project connects to a Reddit instance using Apache Airflow to manage ETL (E
    error_handling = abort
    log_level = info
    ```
-   
 
-6. **Run the Docker containers**:
+5. **Run the Docker containers**:
    ```bash
    docker compose up -d --build
    ```
+   - Docker view.
+   
+   ![Docker](utils/images/Docker_ss.png)
 
-7. **Trigger the DAG**:
+
+6. **Trigger the DAG**:
    Access Airflow via `localhost:8080` and trigger the DAG for Reddit data extraction and transformation.
 
 ## Project Workflow
@@ -133,11 +120,20 @@ This project connects to a Reddit instance using Apache Airflow to manage ETL (E
 1. **Reddit Data Extraction**:
    - The pipeline connects to Reddit using the PRAW library and extracts posts from a specified subreddit.
    
+   ![Airflow DAG Overview](utils/images/Airflow_ss.png)
+
+   - Below is an example of raw data.
+   ![Raw Data Example](utils/images/Raw_data_reddit_ss.png)
+
 2. **Data Transformation**:
    - The extracted data is cleaned and transformed using Pandas to create a structured DataFrame.
 
+   ![Data Transformation in AWS Glue](utils/images/Data_transformation_ss.png)
+
 3. **Data Storage**:
    - The cleaned data is uploaded to an AWS S3 bucket as CSV files.
+
+   ![Raw Data in S3](utils/images/Raw_data_inS3.png)
 
 4. **AWS Glue for ETL**:
    - AWS Glue crawls the data in S3 to generate a schema and further transforms the data.
@@ -145,11 +141,13 @@ This project connects to a Reddit instance using Apache Airflow to manage ETL (E
 5. **Querying with AWS Athena**:
    - SQL queries are executed on the cleansed data in AWS Athena for insights and visualization.
 
+   ![Querying Data with AWS Athena](utils/images/Querying_Athena_ss.png)
+
 6. **Loading Data into Amazon Redshift**:
    - Finally, the transformed data is loaded into Amazon Redshift for further analysis and reporting.
 
-
 ## Conclusion
+
 This project demonstrates the end-to-end process of building a scalable data pipeline using Apache Airflow to extract data from Reddit, followed by the transformation and visualization of the data using AWS services such as S3, Glue, Athena, and Redshift. By integrating these cloud technologies, the pipeline automates the entire ETL workflow, allowing for efficient data handling and advanced analytics.
 
 The use of Apache Airflow ensures that the tasks are properly orchestrated, monitored, and scheduled. AWS services enhance the storage, transformation, and querying capabilities, providing a powerful platform for managing large-scale data pipelines. This project serves as a practical example of how open-source and cloud tools can be combined to build a robust, cloud-native data engineering solution.
