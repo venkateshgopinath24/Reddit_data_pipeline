@@ -48,24 +48,34 @@ This project connects to a Reddit instance using Apache Airflow to manage ETL (E
    ```
 
 2. **Install dependencies**:
-   Ensure you have Docker installed. You can pull the required Airflow image:
+   Necessary directories and files.
    ```bash
-   docker-compose up airflow-init
+   mkdir config
    ```
+   Using a python virtual environment (3.9 recommended), install dependencies using below.
+   ```bash
+   pip install apache-airflow numpy pandas praw
+   ```
+   Ensure you have Docker installed.
+   Make requirements.txt that will be used by Docker to create a container with necessary dependencies.
+   ```bash
+   pip freeze > requirments.txt
+   ```
+   
 
-3. **Create a Reddit application**:
+4. **Create a Reddit application**:
    - Go to [Reddit's Developer Portal](https://www.reddit.com/prefs/apps) and create a new application.
    - Set the `client_id`, `client_secret`, and `user_agent` in the environment variables or your configuration file.
 
-4. **Configure Airflow**:
-   Set up your `airflow.cfg` and the folder structure for storing DAGs, logs, and data.
+5. **Configure reddit and AWS credentials**:
+   In the `.config` file, edi the .
 
-5. **Run the Docker containers**:
+6. **Run the Docker containers**:
    ```bash
    docker compose up -d --build
    ```
 
-6. **Trigger the DAG**:
+7. **Trigger the DAG**:
    Access Airflow via `localhost:8080` and trigger the DAG for Reddit data extraction and transformation.
 
 ## Project Workflow
