@@ -1,0 +1,7 @@
+reddit_venv
+*.conf
+logs
+.idea
+__pycache__
+/Users/priyameghanalolla/Desktop/Venky/reddit_project/rootkey.csv
+/Users/priyameghanalolla/Desktop/Venky/reddit_project/config
