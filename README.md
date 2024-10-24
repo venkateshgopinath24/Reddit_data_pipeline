@@ -70,10 +70,12 @@ This project connects to a Reddit instance using Apache Airflow to manage ETL (E
    ```
 
 3. **Create a Reddit application**:
+
    - Go to [Reddit's Developer Portal](https://www.reddit.com/prefs/apps) and create a new application.
    - Set the `client_id`, `client_secret`, and `user_agent` in your configuration file.
 
 4. **Configure environment variables in `.config`**:
+
    ```bash
    [database]
    database_host = localhost
